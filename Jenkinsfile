@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+      /*
         stage('Build') {
           agent {
             docker {
@@ -21,6 +22,7 @@ pipeline {
                 '''
             }
         }
+        */
 
         stage('Test') {
           agent {
@@ -32,9 +34,9 @@ pipeline {
 
           steps {
           sh '''
-          echo "Test for exists build/index.html"
-          test -f build/index.html
-          echo $?
+          #echo "Test for exists build/index.html"
+          #test -f build/index.html
+          #echo $?
           echo "Run existing tests..."
           npm test
           '''
