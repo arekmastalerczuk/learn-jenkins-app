@@ -9,6 +9,7 @@ pipeline {
               reuseNode true
             }
           }
+
             steps {
                 sh '''
                 ls -lah
@@ -20,27 +21,23 @@ pipeline {
                 '''
             }
         }
-        stage('Test build exists') {
-          steps {
-          sh '''
-          echo "Running tests..."
-          test -f build/index.html
-          echo $?
-          '''
-          }
-        }
-        stage("Run existing tests") {
+
+        stage('Test') {
           agent {
             docker {
               image 'node:24-alpine'
               reuseNode true
             }
           }
+          
           steps {
-            sh '''
-            echo "Run existing tests..."
-            npm test
-            '''
+          sh '''
+          echo "Test for exists build/index.html"
+          test -f build/index.html
+          echo $?
+          echo "Run existing tests..."
+          npm test
+          '''
           }
         }
     }
