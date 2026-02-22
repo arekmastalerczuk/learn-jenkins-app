@@ -29,7 +29,7 @@ pipeline {
               reuseNode true
             }
           }
-          
+
           steps {
           sh '''
           echo "Test for exists build/index.html"
@@ -40,5 +40,11 @@ pipeline {
           '''
           }
         }
+    }
+
+    post {
+      always {
+        junit 'test-results/junit.xml'
+      }
     }
 }
