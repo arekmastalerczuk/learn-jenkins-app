@@ -10,8 +10,6 @@ pipeline {
             }
           }
             steps {
-                echo 'Cleaning workspace...'
-                cleanWs()
                 sh '''
                 ls -lah
                 node --version
