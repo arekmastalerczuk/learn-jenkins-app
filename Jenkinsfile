@@ -10,6 +10,8 @@ pipeline {
             }
           }
             steps {
+                echo 'Cleaning workspace...'
+                cleanWs()
                 sh '''
                 ls -lah
                 node --version
@@ -29,12 +31,6 @@ pipeline {
           }
         }
         stage("Run existing tests") {
-          agent {
-            docker {
-              image 'node:24-alpine'
-              reuseNode true
-            }
-          }
           steps {
             sh '''
             echo "Run existing tests..."
