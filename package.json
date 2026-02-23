@@ -16,7 +16,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --testResultsProcessor=\"jest-junit\"",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "eslintConfig": {
     "extends": [
@@ -38,7 +40,9 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
-    "@types/node": "^20.8.6"
+    "@types/node": "^20.8.6",
+    "prettier": "^3.8.1",
+    "prettier-plugin-groovy": "^0.2.1"
   },
   "jest-junit": {
     "suiteName": "jest tests",

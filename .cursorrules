@@ -1,0 +1,23 @@
+# Windsurf Configuration
+
+## Formatting Rules
+- ALWAYS use prettier for all files
+- Format on save MUST be enabled
+- Jenkinsfile MUST use groovy parser with 2 space indentation
+- NO tabs - only spaces
+- Consistent 2-space indentation for Jenkins Pipeline
+
+## File Associations
+- Jenkinsfile -> groovy language
+- Use prettier-plugin-groovy for Jenkinsfile formatting
+
+## Editor Settings
+- tabWidth: 2
+- useTabs: false
+- editor.formatOnSave: true
+- editor.defaultFormatter: prettier
+
+## Jenkins Pipeline Specific
+- Use 2 spaces for each indentation level
+- Align stage blocks consistently
+- Format sh scripts with proper indentation

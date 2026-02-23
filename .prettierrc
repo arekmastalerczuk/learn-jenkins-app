@@ -1,0 +1,13 @@
+{
+  "plugins": ["prettier-plugin-groovy"],
+  "overrides": [
+    {
+      "files": "Jenkinsfile",
+      "options": {
+        "parser": "groovy",
+        "tabWidth": 4,
+        "useTabs": true
+      }
+    }
+  ]
+}
