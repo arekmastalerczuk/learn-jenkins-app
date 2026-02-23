@@ -56,7 +56,10 @@ pipeline {
           echo "E2E tests.."
           npm run build
           npm i serve
-          node_modules/.bin/serve -s build
+          # added '&' at the end of serve command to run it in the background
+          node_modules/.bin/serve -s build &
+          # sleep 10 seconds to wait for the server to start
+          sleep 10
           npx playwright test
           '''
           }
