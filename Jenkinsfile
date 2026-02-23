@@ -54,7 +54,7 @@ pipeline {
           steps {
           sh '''
           echo "E2E tests.."
-          npm ci
+          # npm ci
           npm run build
           npm i serve
           # added '&' at the end of serve command to run it in the background
@@ -69,7 +69,7 @@ pipeline {
 
     post {
       always {
-        junit 'test-results/junit.xml'
+        junit 'jest-results/junit.xml'
       }
     }
 }
