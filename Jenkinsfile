@@ -56,7 +56,7 @@ pipeline {
           echo "E2E tests.."
           npm run build
           npm i serve
-          serve -s build
+          node_modules/.bin/serve -s build
           npx playwright test
           '''
           }
