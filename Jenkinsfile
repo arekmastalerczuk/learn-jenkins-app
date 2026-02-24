@@ -22,9 +22,9 @@ pipeline {
             }
         }
         */
-    stage('Run tests') {
+    stage('Tests') {
       parallel {
-        stage('Test') {
+        stage('Unit tests') {
           agent {
             docker {
               image 'node:24-alpine'
@@ -33,11 +33,15 @@ pipeline {
           }
           steps {
             sh '''
-          echo "Test for exists build/index.html"
+          echo "Test for exists build/index.html ..."
           test -f build/index.html
-          echo $?
-          echo "Run existing tests..."
+          echo "Status code for exists build/index.html: $?"
           '''
+          }
+          post {
+            always {
+              junit 'jest-results/junit.xml'
+            }
           }
         }
         stage('E2E') {
@@ -49,7 +53,7 @@ pipeline {
           }
           steps {
             sh '''
-          echo "E2E tests.."
+          echo "E2E tests..."
           npm run build
           npm i serve
           # added '&' at the end of serve command to run it in the background
@@ -60,14 +64,13 @@ pipeline {
           npx playwright test --reporter=html
           '''
           }
+          post {
+            always {
+              publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+            }
+          }
         }
       }
-    }
-  }
-  post {
-    always {
-      junit 'jest-results/junit.xml'
-      publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
     }
   }
 }
