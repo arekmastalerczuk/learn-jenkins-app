@@ -37,6 +37,7 @@ pipeline {
           echo "Test for exists build/index.html ..."
           test -f build/index.html
           echo "Status code for exists build/index.html: $?"
+          echo "Test git pooling build ..."
           '''
           }
           post {
