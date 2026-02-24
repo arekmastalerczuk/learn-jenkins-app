@@ -78,8 +78,8 @@ pipeline {
       }
       steps {
         sh '''
-          npm i netlify-cli -g
-          netlify --version
+          npm i netlify-cli
+          node_modules/.bin/netlify --version
         '''
       }
     }
