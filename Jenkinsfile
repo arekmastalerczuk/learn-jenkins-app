@@ -10,13 +10,13 @@ pipeline {
       }
       steps {
         sh '''
-                ls -lah
-                node --version
-                npm --version
-                npm ci
-                npm run build
-                ls -lah
-                '''
+            ls -lah
+            node --version
+            npm --version
+            npm ci
+            npm run build
+            ls -lah
+        '''
       }
     }
     stage('Tests') {
@@ -67,6 +67,20 @@ pipeline {
             }
           }
         }
+      }
+    }
+    stage('Deploy') {
+      agent {
+        docker {
+          image 'node:24-alpine'
+          reuseNode true
+        }
+      }
+      steps {
+        sh '''
+          npm i netlify-cli -g
+          netlify --version
+        '''
       }
     }
   }
