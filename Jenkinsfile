@@ -3,6 +3,7 @@ pipeline {
   environment {
     NETLIFY_SITE_ID = 'f22ccac0-4f4e-450f-bb7f-acad81774893'
     NETLIFY_AUTH_TOKEN = credentials('netlify-jenkins-token')
+    CI_ENVIRONMENT_URL = 'https://jenkins-ci-cd-course.netlify.app/'
   }
   stages {
     stage('Build') {
@@ -37,7 +38,6 @@ pipeline {
           echo "Test for exists build/index.html ..."
           test -f build/index.html
           echo "Status code for exists build/index.html: $?"
-          echo "Test git pooling build ..."
           '''
           }
           post {
@@ -68,7 +68,7 @@ pipeline {
           }
           post {
             always {
-              publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+              publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright Local', reportTitles: '', useWrapperFileDirectly: true])
             }
           }
         }
@@ -89,6 +89,28 @@ pipeline {
           node_modules/.bin/netlify status
           node_modules/.bin/netlify deploy --dir=build --prod
         '''
+      }
+    }
+    stage('Prod E2E') {
+      agent {
+        docker {
+          image 'mcr.microsoft.com/playwright:v1.58.2-noble' // Playwright docker image
+          reuseNode true
+        }
+      }
+      environment {
+        CI_ENVIRONMENT_URL = 'https://jenkins-ci-cd-course.netlify.app'
+      }
+      steps {
+        sh '''
+          echo "Production E2E tests..."
+          npx playwright test --reporter=html
+          '''
+      }
+      post {
+        always {
+          publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright E2E', reportTitles: '', useWrapperFileDirectly: true])
+        }
       }
     }
   }
