@@ -3,7 +3,6 @@ pipeline {
   environment {
     NETLIFY_SITE_ID = 'f22ccac0-4f4e-450f-bb7f-acad81774893'
     NETLIFY_AUTH_TOKEN = credentials('netlify-jenkins-token')
-    // CI_ENVIRONMENT_URL = 'https://jenkins-ci-cd-course.netlify.app/'
   }
   stages {
     stage('Build') {
@@ -89,6 +88,13 @@ pipeline {
           node_modules/.bin/netlify status
           node_modules/.bin/netlify deploy --dir=build
         '''
+      }
+    }
+    stage('Approval') {
+      steps {
+        timeout(time: 1, unit: 'MINUTES') {
+          input cancel: 'No, there is a problem.', message: 'Do you wish to deploy to production?', ok: 'Yes, I\'m sure!'
+        }
       }
     }
     stage('Deploy prod') {
