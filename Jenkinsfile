@@ -84,7 +84,7 @@ pipeline {
         sh '''
           npm i netlify-cli node-jq
           node_modules/.bin/netlify --version
-          echo "Deploying to staging. Site ID: $env.NETLIFY_SITE_ID"
+          echo "Deploying to staging. Site ID: $NETLIFY_SITE_ID"
           node_modules/.bin/netlify status
           node_modules/.bin/netlify deploy --dir=build --json > deploy-output.json
         '''
@@ -101,11 +101,12 @@ pipeline {
         }
       }
       environment {
-        CI_ENVIRONMENT_URL = "$env.STAGING_URL"
+        CI_ENVIRONMENT_URL = "$STAGING_URL"
       }
       steps {
         sh '''
           echo "Staging E2E tests..."
+          echo "Staging URL: $STAGING_URL"
           npx playwright test --reporter=html
           '''
       }
@@ -133,7 +134,7 @@ pipeline {
         sh '''
           npm i netlify-cli
           node_modules/.bin/netlify --version
-          echo "Deploying to production. Site ID: $env.NETLIFY_SITE_ID"
+          echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
           node_modules/.bin/netlify status
           node_modules/.bin/netlify deploy --dir=build --prod
         '''
