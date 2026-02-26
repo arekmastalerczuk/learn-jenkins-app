@@ -80,6 +80,9 @@ pipeline {
           reuseNode true
         }
       }
+      environment {
+        CI_ENVIRONMENT_URL="TO_BE_SET"
+      }
       steps {
         sh '''
           npm i netlify-cli node-jq
@@ -87,8 +90,8 @@ pipeline {
           echo "Deploying to staging. Site ID: $NETLIFY_SITE_ID"
           node_modules/.bin/netlify status
           node_modules/.bin/netlify deploy --dir=build --json > deploy-output.json
-          # CI_ENVIRONMENT_URL sets below is only visible inside '''sh ...'''
-          CI_ENVIRONMENT_URL=$(node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json) 
+          # CI_ENVIRONMENT_URL sets below is only visible inside lines in that script, also need to ser environment default value
+          CI_ENVIRONMENT_URL=$(node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json)
           echo "Staging E2E tests..."
           npx playwright test --reporter=html
           '''
