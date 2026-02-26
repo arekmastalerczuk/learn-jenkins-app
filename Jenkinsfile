@@ -56,7 +56,7 @@ pipeline {
           steps {
             sh '''
           echo "E2E tests..."
-          npm run build
+          # npm run build
           npm i serve
           # added '&' at the end of serve command to run it in the background
           node_modules/.bin/serve -s build &
