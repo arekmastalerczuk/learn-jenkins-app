@@ -82,7 +82,7 @@ pipeline {
     stage('Deploy staging & E2E') {
       agent {
         docker {
-          image 'mcr.microsoft.com/playwright:v1.58.2-noble' // Playwright docker image
+          image 'my-playwright' // Custom Playwright docker image from Dockerfile
           reuseNode true
         }
       }
@@ -91,13 +91,12 @@ pipeline {
       }
       steps {
         sh '''
-          npm i netlify-cli node-jq
-          node_modules/.bin/netlify --version
+          netlify --version
           echo "Deploying to staging. Site ID: $NETLIFY_SITE_ID"
-          node_modules/.bin/netlify status
-          node_modules/.bin/netlify deploy --dir=build --no-build --json > deploy-output.json
+          netlify status
+          netlify deploy --dir=build --no-build --json > deploy-output.json
           # CI_ENVIRONMENT_URL sets below is only visible inside lines in that script, also need to ser environment default value
-          CI_ENVIRONMENT_URL=$(node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json)
+          CI_ENVIRONMENT_URL=$(node-jq -r '.deploy_url' deploy-output.json)
           echo "Staging E2E tests..."
           npx playwright test --reporter=html
           '''
@@ -111,7 +110,7 @@ pipeline {
     stage('Deploy production & E2E') {
       agent {
         docker {
-          image 'mcr.microsoft.com/playwright:v1.58.2-noble' // Playwright docker image
+          image 'my-playwright' // Custom Playwright docker image from Dockerfile
           reuseNode true
         }
       }
@@ -121,11 +120,10 @@ pipeline {
       steps {
         sh '''
           node -v
-          npm i netlify-cli
-          node_modules/.bin/netlify --version
+          netlify --version
           echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
-          node_modules/.bin/netlify status
-          node_modules/.bin/netlify deploy --dir=build --prod --no-build
+          netlify status
+          netlify deploy --dir=build --prod --no-build
           echo "Production E2E tests..."
           npx playwright test --reporter=html
           '''
