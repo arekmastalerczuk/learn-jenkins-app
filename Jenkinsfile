@@ -89,7 +89,7 @@ pipeline {
           netlify status
           netlify deploy --dir=build --no-build --json > deploy-output.json
           # CI_ENVIRONMENT_URL sets below is only visible inside lines in that script, also need to ser environment default value
-          CI_ENVIRONMENT_URL=$(node-jq -r '.deploy_url' deploy-output.json)
+          CI_ENVIRONMENT_URL=$(jq -r '.deploy_url' deploy-output.json)
           echo "Staging E2E tests..."
           npx playwright test --reporter=html
           '''
