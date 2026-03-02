@@ -54,17 +54,15 @@ pipeline {
         stage('E2E') {
           agent {
             docker {
-              image 'mcr.microsoft.com/playwright:v1.58.2-noble' // Playwright docker image
+              image 'my-playwright' // Custom Playwright docker image from Dockerfile
               reuseNode true
             }
           }
           steps {
             sh '''
           echo "E2E tests..."
-          # npm run build
-          npm i serve
           # added '&' at the end of serve command to run it in the background
-          node_modules/.bin/serve -s build &
+          serve -s build &
           # sleep 10 seconds to wait for the server to start
           sleep 10
           echo "Run E2E tests..."
