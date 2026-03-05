@@ -8,6 +8,29 @@ pipeline {
     AWS_ECS_TD_PROD = "LearnJenkinsApp-TaskDefinition-Prod"
   }
   stages {
+    stage('Build') {
+      agent {
+        docker {
+          image 'node:24-alpine'
+          reuseNode true
+        }
+      }
+      steps {
+        sh '''
+            ls -lah
+            node --version
+            npm --version
+            npm ci
+            npm run build
+            ls -lah
+        '''
+      }
+    }
+    stage('Build docker image') {
+      steps {
+        sh 'docker build -t my-learn-jenkins-app .'
+      }
+    }
     stage('Deploy to AWS') {
       agent {
         docker {
@@ -27,24 +50,6 @@ pipeline {
           aws ecs wait services-stable --cluster $AWS_ECS_CLUSTER --services $AWS_ECS_SERVICE
         '''
         }
-      }
-    }
-    stage('Build') {
-      agent {
-        docker {
-          image 'node:24-alpine'
-          reuseNode true
-        }
-      }
-      steps {
-        sh '''
-            ls -lah
-            node --version
-            npm --version
-            npm ci
-            npm run build
-            ls -lah
-        '''
       }
     }
   }
