@@ -35,7 +35,11 @@ pipeline {
         }
       }
       steps {
-        sh 'docker build -t my-learn-jenkins-app .'
+        sh '''
+          yum install -y docker
+          service docker start
+          docker build -t my-learn-jenkins-app .
+        '''
       }
     }
     stage('Deploy to AWS') {
