@@ -35,10 +35,7 @@ pipeline {
         }
       }
       steps {
-        sh '''
-          amazon-linux-extras install docker
-          docker build -t my-learn-jenkins-app .
-        '''
+        sh 'docker build -t my-learn-jenkins-app .'
       }
     }
     stage('Deploy to AWS') {
