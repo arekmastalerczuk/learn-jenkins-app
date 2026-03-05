@@ -37,7 +37,6 @@ pipeline {
       steps {
         sh '''
           yum install -y docker
-          service docker start
           docker build -t my-learn-jenkins-app .
         '''
       }
