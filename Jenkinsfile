@@ -36,10 +36,9 @@ pipeline {
       }
       steps {
         sh '''
-            dnf install -y dnf-plugins-core
-            dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-            dnf install -y docker-ce-cli
-            docker build -t my-learn-jenkins-app .
+          yum install -y docker
+          export DOCKER_API_VERSION=1.44
+          docker build -t my-learn-jenkins-app .
         '''
       }
     }
