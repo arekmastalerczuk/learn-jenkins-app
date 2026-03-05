@@ -15,7 +15,7 @@ pipeline {
         }
       }
       environment {
-        AWS_S3_JENKINS_BUCKET = 'jenkins-course-2026'
+        AWS_S3_JENKINS_BUCKET = '2026-jenkins-course'
       }
       steps {
         withCredentials([usernamePassword(credentialsId: 'aws-jenkins', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
