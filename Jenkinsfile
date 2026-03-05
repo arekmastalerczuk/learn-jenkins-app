@@ -27,8 +27,18 @@ pipeline {
       }
     }
     stage('Build docker image') {
+      agent {
+        docker {
+          image 'amazon/aws-cli:2.34.0'
+          args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"
+          reuseNode true
+        }
+      }
       steps {
-        sh 'docker build -t my-learn-jenkins-app .'
+        sh '''
+          amazon-linux-extras install docker
+          docker build -t my-learn-jenkins-app .
+        '''
       }
     }
     stage('Deploy to AWS') {
